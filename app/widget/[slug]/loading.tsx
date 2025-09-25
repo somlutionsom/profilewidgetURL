@@ -177,16 +177,6 @@ export default function Loading() {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            left: -100%;
-          }
-          100% {
-            left: 100%;
-          }
-        }
-      `}</style>
     </div>
   )
 }
