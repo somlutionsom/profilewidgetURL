@@ -119,11 +119,22 @@ export async function POST(request: NextRequest) {
         [assetType]: storagePath
       }
 
+      // 현재 버전 조회 후 증가
+      const { data: versionData, error: fetchError } = await supabaseAdmin
+        .from('widget_configs')
+        .select('version')
+        .eq('id', widgetId)
+        .single()
+
+      if (fetchError) {
+        throw new Error(`Failed to fetch current widget: ${fetchError.message}`)
+      }
+
       const { error: updateError } = await supabaseAdmin
         .from('widget_configs')
         .update({ 
           asset_refs: updatedAssetRefs,
-          version: supabaseAdmin.raw('version + 1')
+          version: (versionData.version || 1) + 1
         })
         .eq('id', widgetId)
 
