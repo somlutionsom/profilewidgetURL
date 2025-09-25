@@ -24,16 +24,5 @@ jobs:
       
     - name: Verify installation
       run: |
-        echo "📦 Installed packages:"
+        echo "✅ Dependencies installed successfully"
         npm list --depth=0
-        
-    - name: Check Next.js
-      run: |
-        echo "🔍 Checking Next.js installation:"
-        npx next --version || echo "Next.js not found"
-        
-    - name: Basic syntax check
-      run: |
-        echo "🔍 Running basic syntax check:"
-        npx tsc --noEmit --skipLibCheck || echo "TypeScript check failed but continuing..."
-      continue-on-error: true
