@@ -120,14 +120,14 @@ export async function POST(request: NextRequest) {
       }
 
       // 현재 버전 조회 후 증가
-      const { data: versionData, error: fetchError } = await supabaseAdmin
+      const { data: versionData, error: versionError } = await supabaseAdmin
         .from('widget_configs')
         .select('version')
         .eq('id', widgetId)
         .single()
 
-      if (fetchError) {
-        throw new Error(`Failed to fetch current widget: ${fetchError.message}`)
+      if (versionError) {
+        throw new Error(`Failed to fetch widget version: ${versionError.message}`)
       }
 
       const { error: updateError } = await supabaseAdmin
