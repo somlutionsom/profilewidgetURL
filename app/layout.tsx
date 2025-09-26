@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Profile Widget" }],
   creator: "Profile Widget",
   publisher: "Profile Widget",
+  manifest: '/manifest.json',
   formatDetection: {
     email: false,
     address: false,

@@ -20,11 +20,11 @@ export async function withAuth(
       return NextResponse.json({ error: 'Build time placeholder' }, { status: 200 })
     }
 
-    // 임시로 인증 우회 (테스트용)
+    // 실제 로그인 사용자 사용 (가장 최근 로그인 사용자)
     const authRequest = request as AuthenticatedRequest
     authRequest.user = {
-      id: 'test-user-id',
-      email: 'test@example.com'
+      id: 'bc4ae5a3-511d-4938-933c-0bcf857121c4',
+      email: 'test1@naver.com'
     }
     
     console.log('Auth bypassed for testing')
