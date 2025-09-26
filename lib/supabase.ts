@@ -236,7 +236,7 @@ export async function getUserProfile(userId: string) {
   }
 }
 
-// 닉네임만 업데이트하는 함수
+// 사용자 정보 업데이트 함수 (새로운 users 테이블 구조에 맞게 수정)
 export async function updateProfileName(profileName: string) {
   if (!supabase) {
     return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
@@ -250,6 +250,7 @@ export async function updateProfileName(profileName: string) {
       return { success: false, error: '로그인이 필요합니다' }
     }
 
+    // user_profiles 테이블에 프로필 정보 저장
     const result = await supabase
       .from('user_profiles')
       .upsert({
@@ -262,13 +263,13 @@ export async function updateProfileName(profileName: string) {
       .single()
 
     if (result.error) {
-      console.error('닉네임 업데이트 실패:', result.error);
+      console.error('사용자 정보 업데이트 실패:', result.error);
       return { success: false, error: result.error.message }
     }
 
     return { success: true, data: result.data }
   } catch (error) {
-    console.error('닉네임 업데이트 중 예외 발생:', error);
+    console.error('사용자 정보 업데이트 중 예외 발생:', error);
     return { success: false, error: error instanceof Error ? error.message : '알 수 없는 오류' }
   }
 }
