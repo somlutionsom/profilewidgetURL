@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createErrorResponse, createSuccessResponse, rateLimit, getClientIP, setCorsHeaders, setSecurityHeaders } from '@/lib/auth-middleware'
 import { supabasePublic, createSignedUrl } from '@/lib/supabase-admin'
 
