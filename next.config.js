@@ -1,11 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   trailingSlash: false,
+  output: 'standalone', // Vercel 최적화
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // critters 모듈 오류로 인해 비활성화
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // 정적 페이지 생성 시 오류 방지
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
   },
   env: {
     // 빌드 시 기본값 제공 (실제 환경에서는 환경 변수로 오버라이드)
