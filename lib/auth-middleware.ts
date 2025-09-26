@@ -20,13 +20,13 @@ export async function withAuth(
       return NextResponse.json({ error: 'Build time placeholder' }, { status: 200 })
     }
 
-    // 환경 변수 검증
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return NextResponse.json(
-        { error: 'Server configuration error' },
-        { status: 500 }
-      )
-    }
+    // 환경 변수 검증 (하드코딩된 값 사용하므로 검증 생략)
+    // if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    //   return NextResponse.json(
+    //     { error: 'Server configuration error' },
+    //     { status: 500 }
+    //   )
+    // }
     // Authorization 헤더에서 Bearer 토큰 추출
     const authHeader = request.headers.get('authorization')
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
