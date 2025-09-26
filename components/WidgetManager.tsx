@@ -51,10 +51,18 @@ export default function WidgetManager({ currentProfile }: WidgetManagerProps) {
 
   // 새 위젯 생성
   const handleCreateWidget = async () => {
-    if (loading) return // 이미 생성 중이면 중단
+    console.log('새 위젯 생성 버튼 클릭됨!')
+    console.log('currentProfile:', currentProfile)
+    console.log('loading 상태:', loading)
+    
+    if (loading) {
+      console.log('이미 로딩 중이므로 중단')
+      return
+    }
     
     setLoading(true)
     setError('')
+    console.log('위젯 생성 시작...')
     
     try {
       const widgetData: CreateWidgetData = {
@@ -73,17 +81,27 @@ export default function WidgetManager({ currentProfile }: WidgetManagerProps) {
         }
       }
 
+      console.log('위젯 데이터 준비:', widgetData)
+      console.log('createWidget 함수 호출...')
+      
       const result = await createWidget(widgetData)
+      
+      console.log('createWidget 결과:', result)
+      
       if (result.success) {
+        console.log('위젯 생성 성공! 목록 새로고침 중...')
         setShowCreateForm(false)
         await loadWidgets() // 목록 새로고침
+        console.log('목록 새로고침 완료')
       } else {
+        console.error('위젯 생성 실패:', result.error)
         setError(result.error || 'Failed to create widget')
       }
     } catch (err) {
       console.error('위젯 생성 오류:', err)
-      setError('위젯 생성 중 오류가 발생했습니다.')
+      setError('위젯 생성 중 오류가 발생했습니다: ' + (err as Error).message)
     } finally {
+      console.log('위젯 생성 프로세스 완료, 로딩 상태 해제')
       setLoading(false)
     }
   }
@@ -156,19 +174,39 @@ export default function WidgetManager({ currentProfile }: WidgetManagerProps) {
       {/* 새 위젯 생성 버튼 */}
       <div style={{ marginBottom: '20px' }}>
         <button
-          onClick={handleCreateWidget}
+          onClick={(e) => {
+            console.log('버튼 클릭 이벤트 발생!', e);
+            handleCreateWidget();
+          }}
           disabled={loading}
           style={{
-            padding: '12px 24px',
-            backgroundColor: loading ? '#ccc' : currentProfile.button_color,
-            color: '#2C2C2E',
+            padding: '16px 32px',
+            backgroundColor: loading ? '#ccc' : (currentProfile.button_color || '#FF69B4'),
+            color: '#fff',
             border: 'none',
-            borderRadius: '8px',
-            fontWeight: '500',
-            cursor: loading ? 'not-allowed' : 'pointer'
+            borderRadius: '12px',
+            fontSize: '16px',
+            fontWeight: '600',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            boxShadow: loading ? 'none' : '0 4px 12px rgba(0,0,0,0.15)',
+            transition: 'all 0.2s ease',
+            transform: loading ? 'scale(0.98)' : 'scale(1)',
+            opacity: loading ? 0.7 : 1
+          }}
+          onMouseOver={(e) => {
+            if (!loading) {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.2)';
+            }
+          }}
+          onMouseOut={(e) => {
+            if (!loading) {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            }
           }}
         >
-          {loading ? '생성 중...' : '+ 새 위젯 생성'}
+          {loading ? '🔄 생성 중...' : '✨ 새 위젯 생성'}
         </button>
       </div>
 
