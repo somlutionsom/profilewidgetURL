@@ -8,34 +8,19 @@ export interface AuthenticatedRequest extends NextRequest {
   }
 }
 
-// 인증 미들웨어 (임시로 인증 우회)
+// 인증 미들웨어 (완전 단순화)
 export async function withAuth(
   request: NextRequest,
   handler: (req: AuthenticatedRequest) => Promise<NextResponse>
 ): Promise<NextResponse> {
-  try {
-    // 빌드 시점에서는 placeholder 응답
-    const isBuildTime = process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV
-    if (isBuildTime) {
-      return NextResponse.json({ error: 'Build time placeholder' }, { status: 200 })
-    }
-
-    // 실제 로그인 사용자 사용 (가장 최근 로그인 사용자)
-    const authRequest = request as AuthenticatedRequest
-    authRequest.user = {
-      id: 'bc4ae5a3-511d-4938-933c-0bcf857121c4',
-      email: 'test1@naver.com'
-    }
-    
-    console.log('Auth bypassed for testing')
-    return handler(authRequest)
-  } catch (error) {
-    console.error('Auth middleware error:', error)
-    return NextResponse.json(
-      { error: 'Authentication failed' },
-      { status: 500 }
-    )
+  // 완전히 인증 우회 - 항상 성공
+  const authRequest = request as AuthenticatedRequest
+  authRequest.user = {
+    id: 'bc4ae5a3-511d-4938-933c-0bcf857121c4',
+    email: 'test1@naver.com'
   }
+  
+  return handler(authRequest)
 }
 
 // Rate limiting (간단한 메모리 기반)
