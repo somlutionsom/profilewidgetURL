@@ -167,6 +167,11 @@ export async function getSession() {
 
 // 인증 상태 변화 감지
 export function onAuthStateChange(callback: (event: string, session: any) => void) {
+  if (!supabase) {
+    console.error('Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.')
+    return { data: { subscription: null }, error: null }
+  }
+  
   return supabase.auth.onAuthStateChange(callback)
 }
 
