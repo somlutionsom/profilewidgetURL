@@ -14,6 +14,12 @@ export async function withAuth(
   handler: (req: AuthenticatedRequest) => Promise<NextResponse>
 ): Promise<NextResponse> {
   try {
+    // 빌드 시점에서는 placeholder 응답
+    const isBuildTime = process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV
+    if (isBuildTime) {
+      return NextResponse.json({ error: 'Build time placeholder' }, { status: 200 })
+    }
+
     // 환경 변수 검증
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       return NextResponse.json(

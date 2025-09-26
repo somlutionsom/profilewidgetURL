@@ -4,17 +4,12 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder_service_key'
 
-// 런타임에서만 환경 변수 검증
-function validateEnvironment() {
-  if (process.env.NODE_ENV !== 'production') return true
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.error('Missing Supabase environment variables')
-    return false
-  }
-  return true
-}
+// 빌드 시점에서는 항상 placeholder 값 사용
+const isBuildTime = process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV
+const finalSupabaseUrl = isBuildTime ? 'https://placeholder.supabase.co' : supabaseUrl
+const finalSupabaseServiceKey = isBuildTime ? 'placeholder_service_key' : supabaseServiceKey
 
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+export const supabaseAdmin = createClient(finalSupabaseUrl, finalSupabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
     persistSession: false
@@ -23,8 +18,9 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 
 // 퍼블릭 클라이언트 (anon key)
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder_anon_key'
+const finalSupabaseAnonKey = isBuildTime ? 'placeholder_anon_key' : supabaseAnonKey
 
-export const supabasePublic = createClient(supabaseUrl, supabaseAnonKey, {
+export const supabasePublic = createClient(finalSupabaseUrl, finalSupabaseAnonKey, {
   auth: {
     autoRefreshToken: false,
     persistSession: false
