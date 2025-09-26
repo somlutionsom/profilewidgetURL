@@ -25,47 +25,66 @@ export default function WidgetManager({ currentProfile }: WidgetManagerProps) {
 
   // 위젯 목록 로드
   const loadWidgets = async () => {
-    setLoading(true)
-    setError('')
-    
-    const result = await getUserWidgets()
-    if (result.success && result.data) {
-      setWidgets(result.data)
-    } else {
-      setError(result.error || 'Failed to load widgets')
+    try {
+      const result = await getUserWidgets()
+      if (result.success && result.data) {
+        setWidgets(result.data)
+        setError('')
+      } else {
+        setError(result.error || 'Failed to load widgets')
+      }
+    } catch (err) {
+      console.error('위젯 목록 로드 오류:', err)
+      setError('위젯 목록을 불러오는 중 오류가 발생했습니다.')
     }
-    
-    setLoading(false)
   }
 
   useEffect(() => {
-    loadWidgets()
+    const initializeWidgets = async () => {
+      setLoading(true)
+      await loadWidgets()
+      setLoading(false)
+    }
+    
+    initializeWidgets()
   }, [])
 
   // 새 위젯 생성
   const handleCreateWidget = async () => {
-    const widgetData: CreateWidgetData = {
-      title: `${currentProfile.profile_name}의 위젯`,
-      config_data: {
-        nickname: currentProfile.profile_name,
-        tagline: '빠르게 완성하고 공유하기',
-        link_url: currentProfile.saved_url,
-        button_color: currentProfile.button_color,
-        custom_text_1: currentProfile.first_text || '',
-        custom_text_2: currentProfile.second_text || ''
-      },
-      asset_refs: {
-        header_image: currentProfile.banner_image || undefined,
-        profile_image: currentProfile.avatar_image || undefined
+    if (loading) return // 이미 생성 중이면 중단
+    
+    setLoading(true)
+    setError('')
+    
+    try {
+      const widgetData: CreateWidgetData = {
+        title: `${currentProfile.profile_name}의 위젯`,
+        config_data: {
+          nickname: currentProfile.profile_name,
+          tagline: '빠르게 완성하고 공유하기',
+          link_url: currentProfile.saved_url,
+          button_color: currentProfile.button_color,
+          custom_text_1: currentProfile.first_text || '첫 번째 텍스트',
+          custom_text_2: currentProfile.second_text || '두 번째 텍스트'
+        },
+        asset_refs: {
+          header_image: currentProfile.banner_image || undefined,
+          profile_image: currentProfile.avatar_image || undefined
+        }
       }
-    }
 
-    const result = await createWidget(widgetData)
-    if (result.success) {
-      setShowCreateForm(false)
-      loadWidgets() // 목록 새로고침
-    } else {
-      setError(result.error || 'Failed to create widget')
+      const result = await createWidget(widgetData)
+      if (result.success) {
+        setShowCreateForm(false)
+        await loadWidgets() // 목록 새로고침
+      } else {
+        setError(result.error || 'Failed to create widget')
+      }
+    } catch (err) {
+      console.error('위젯 생성 오류:', err)
+      setError('위젯 생성 중 오류가 발생했습니다.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -137,18 +156,19 @@ export default function WidgetManager({ currentProfile }: WidgetManagerProps) {
       {/* 새 위젯 생성 버튼 */}
       <div style={{ marginBottom: '20px' }}>
         <button
-          onClick={() => setShowCreateForm(true)}
+          onClick={handleCreateWidget}
+          disabled={loading}
           style={{
             padding: '12px 24px',
-            backgroundColor: currentProfile.button_color,
+            backgroundColor: loading ? '#ccc' : currentProfile.button_color,
             color: '#2C2C2E',
             border: 'none',
             borderRadius: '8px',
             fontWeight: '500',
-            cursor: 'pointer'
+            cursor: loading ? 'not-allowed' : 'pointer'
           }}
         >
-          + 새 위젯 생성
+          {loading ? '생성 중...' : '+ 새 위젯 생성'}
         </button>
       </div>
 
