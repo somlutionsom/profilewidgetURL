@@ -1,9 +1,24 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jkdcoomemfowhehlzlpn.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZGNvb21lbWZvd2hlaGx6bHBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNDQwMjksImV4cCI6MjA3MTYyMDAyOX0.AkohCnOBIsmxMEyyzG9bOWYuPGh08HEF3RzNAs1Xuvo'
+// 환경 변수 확인 및 디버깅
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// 개발 환경에서 환경 변수 확인
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  console.log('Supabase URL:', supabaseUrl ? '설정됨' : '누락됨')
+  console.log('Supabase Anon Key:', supabaseAnonKey ? '설정됨' : '누락됨')
+}
+
+// 환경 변수가 없으면 에러 표시
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('❌ Supabase 환경 변수가 설정되지 않았습니다!')
+  console.error('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl)
+  console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? '설정됨' : '누락됨')
+}
+
+// Supabase 클라이언트 생성 (환경 변수가 있을 때만)
+export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey, {
   db: {
     schema: 'public',
   },
@@ -17,10 +32,14 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   global: {
     headers: { 'x-my-custom-header': 'my-app-name' },
   },
-})
+}) : null
 
 // 연결 테스트 함수
 export async function testSupabaseConnection() {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     // 간단한 연결 테스트 - auth 정보 확인
     const { data, error } = await supabase.auth.getSession()
@@ -40,6 +59,10 @@ export async function testSupabaseConnection() {
 
 // 회원가입 함수 (이메일 확인 없음)
 export async function signUp(email: string, password: string) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -54,13 +77,18 @@ export async function signUp(email: string, password: string) {
     }
     
     return { success: true, data }
-  } catch {
+  } catch (err) {
+    console.error('회원가입 오류:', err)
     return { success: false, error: '회원가입 실패' }
   }
 }
 
 // 로그인 함수
 export async function signIn(email: string, password: string) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -72,7 +100,8 @@ export async function signIn(email: string, password: string) {
     }
     
     return { success: true, data }
-  } catch {
+  } catch (err) {
+    console.error('로그인 오류:', err)
     return { success: false, error: '로그인 실패' }
   }
 }
