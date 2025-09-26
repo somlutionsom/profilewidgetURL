@@ -21,57 +21,14 @@ export async function withAuth(
     }
 
     // 임시로 인증 우회 (테스트용)
-    const authenticatedRequest = request as AuthenticatedRequest
-    authenticatedRequest.user = {
+    const authRequest = request as AuthenticatedRequest
+    authRequest.user = {
       id: 'test-user-id',
       email: 'test@example.com'
     }
     
     console.log('Auth bypassed for testing')
-    return handler(authenticatedRequest)
-
-    // 환경 변수 검증 (하드코딩된 값 사용하므로 검증 생략)
-    // if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    //   return NextResponse.json(
-    //     { error: 'Server configuration error' },
-    //     { status: 500 }
-    //   )
-    // }
-    // Authorization 헤더에서 Bearer 토큰 추출
-    const authHeader = request.headers.get('authorization')
-    console.log('Auth header:', authHeader ? 'Present' : 'Missing')
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.log('Invalid auth header format')
-      return NextResponse.json(
-        { error: 'Missing or invalid authorization header' },
-        { status: 401 }
-      )
-    }
-
-    const token = authHeader.substring(7) // 'Bearer ' 제거
-    console.log('Token length:', token.length)
-
-    // Supabase에서 토큰 검증
-    const { data: { user }, error } = await supabaseAdmin.auth.getUser(token)
-    console.log('Token validation result:', { user: user?.id, error: error?.message })
-
-    if (error || !user) {
-      console.log('Token validation failed:', error)
-      return NextResponse.json(
-        { error: 'Invalid or expired token' },
-        { status: 401 }
-      )
-    }
-
-    // 인증된 사용자 정보를 request에 추가
-    const authenticatedRequest = request as AuthenticatedRequest
-    authenticatedRequest.user = {
-      id: user.id,
-      email: user.email || ''
-    }
-
-    return handler(authenticatedRequest)
+    return handler(authRequest)
   } catch (error) {
     console.error('Auth middleware error:', error)
     return NextResponse.json(
