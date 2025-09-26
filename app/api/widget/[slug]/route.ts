@@ -103,6 +103,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
 // OPTIONS - CORS preflight
 export async function OPTIONS(request: NextRequest) {
-  const response = new Response(null, { status: 200 })
+  const response = new NextResponse(null, { status: 200 })
   return setCorsHeaders(setSecurityHeaders(response))
 }
+

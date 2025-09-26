@@ -132,3 +132,4 @@ export async function deleteFile(bucket: string, path: string) {
     throw new Error(`Failed to delete file: ${error.message}`)
   }
 }
+

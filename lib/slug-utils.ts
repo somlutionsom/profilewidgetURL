@@ -193,3 +193,4 @@ export function analyzeSlug(slug: string) {
     entropy: Math.round(entropy * 100) / 100
   }
 }
+

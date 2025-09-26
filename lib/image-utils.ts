@@ -189,3 +189,4 @@ export class ImageLoader {
 
 // 전역 이미지 로더 인스턴스
 export const imageLoader = new ImageLoader()
+

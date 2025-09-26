@@ -91,7 +91,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
 // OPTIONS - CORS preflight
 export async function OPTIONS(request: NextRequest) {
-  return new Response(null, {
+  return new NextResponse(null, {
     status: 200,
     headers: {
       'Access-Control-Allow-Origin': 'https://*.notion.so, https://notion.so',
@@ -101,3 +101,4 @@ export async function OPTIONS(request: NextRequest) {
     }
   })
 }
+

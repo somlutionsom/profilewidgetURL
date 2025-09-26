@@ -287,3 +287,4 @@ export default function WidgetEditor({ widget, onUpdate, onError }: WidgetEditor
     </div>
   )
 }
+

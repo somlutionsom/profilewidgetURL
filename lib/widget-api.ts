@@ -236,3 +236,4 @@ export async function uploadImage(
     return { success: false, error: 'Network error' }
   }
 }
+

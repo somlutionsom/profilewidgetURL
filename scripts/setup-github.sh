@@ -58,3 +58,4 @@ echo "2. Add remote origin"
 echo "3. Push code to GitHub"
 echo "4. Configure GitHub Secrets"
 echo "5. Connect to Vercel for deployment"
+

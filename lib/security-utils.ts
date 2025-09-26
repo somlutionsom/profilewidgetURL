@@ -226,3 +226,4 @@ export function logSecurityEvent(
     // 예: Sentry, LogRocket 등
   }
 }
+

@@ -240,3 +240,4 @@ supabase.auth.getSession().then(console.log)
 5. 브라우저 콘솔 에러
 
 추가 도움이 필요하면 개발팀에 문의하세요.
+

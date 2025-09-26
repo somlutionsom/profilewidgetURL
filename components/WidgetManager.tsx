@@ -475,3 +475,4 @@ export default function WidgetManager({ currentProfile }: WidgetManagerProps) {
     </div>
   )
 }
+

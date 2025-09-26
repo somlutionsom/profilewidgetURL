@@ -82,3 +82,4 @@ export default async function WidgetPage({ params }: PageProps) {
 
   return <PublicWidget initialData={widgetData.data} slug={params.slug} />
 }
+

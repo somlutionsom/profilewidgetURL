@@ -55,3 +55,4 @@ echo "1. Set environment variables in Vercel Dashboard"
 echo "2. Test the deployment"
 echo "3. Configure custom domain (optional)"
 echo "4. Set up monitoring and analytics"
+

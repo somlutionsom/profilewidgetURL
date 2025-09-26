@@ -211,3 +211,4 @@ export default function PublicWidget({ initialData, slug }: PublicWidgetProps) {
     </div>
   )
 }
+
