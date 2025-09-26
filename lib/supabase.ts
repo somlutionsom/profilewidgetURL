@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-// 환경 변수 확인 및 디버깅
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+// 환경 변수 확인 및 디버깅 (임시 테스트용 기본값 포함)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jkdcoomemfowhehlzlpn.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZGNvb21lbWZvd2hlaGx6bHBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNDQwMjksImV4cCI6MjA3MTYyMDAyOX0.AkohCnOBIsmxMEyyzG9bOWYuPGh08HEF3RzNAs1Xuvo'
 
 // 개발 환경에서 환경 변수 확인
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
@@ -17,8 +17,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? '설정됨' : '누락됨')
 }
 
-// Supabase 클라이언트 생성 (환경 변수가 있을 때만)
-export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey, {
+// Supabase 클라이언트 생성 (기본값 포함)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   db: {
     schema: 'public',
   },
@@ -32,14 +32,10 @@ export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUr
   global: {
     headers: { 'x-my-custom-header': 'my-app-name' },
   },
-}) : null
+})
 
 // 연결 테스트 함수
 export async function testSupabaseConnection() {
-  if (!supabase) {
-    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
-  }
-  
   try {
     // 간단한 연결 테스트 - auth 정보 확인
     const { data, error } = await supabase.auth.getSession()
