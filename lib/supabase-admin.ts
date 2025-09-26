@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 
 // 서버사이드용 Supabase 클라이언트 (관리자 권한)
 const supabaseUrl = 'https://jkdcoomemfowhehlzlpn.supabase.co'
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder_service_key'
+const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZGNvb21lbWZvd2hlaGx6bHBuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjA0NDAyOSwiZXhwIjoyMDcxNjIwMDI5fQ.sZWqWLf6lHKECsXcKjgJ8V0TrG4v1CX0V0nMYKYYKzg'
 
 // 프로덕션에서는 실제 URL 사용
 const finalSupabaseUrl = supabaseUrl

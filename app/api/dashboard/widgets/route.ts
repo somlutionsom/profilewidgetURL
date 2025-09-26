@@ -64,32 +64,32 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // 사용자 제한 확인
-      const { data: user, error: userError } = await supabaseAdmin
-        .from('users')
-        .select('plan, max_widgets')
-        .eq('id', req.user.id)
-        .single()
+      // 사용자 제한 확인 (임시로 주석처리 - 무제한 허용)
+      // const { data: user, error: userError } = await supabaseAdmin
+      //   .from('users')
+      //   .select('plan, max_widgets')
+      //   .eq('id', req.user.id)
+      //   .single()
 
-      if (userError) {
-        throw new Error(`Failed to fetch user info: ${userError.message}`)
-      }
+      // if (userError) {
+      //   throw new Error(`Failed to fetch user info: ${userError.message}`)
+      // }
 
-      const { data: existingWidgets, error: countError } = await supabaseAdmin
-        .from('widget_configs')
-        .select('id', { count: 'exact' })
-        .eq('user_id', req.user.id)
+      // const { data: existingWidgets, error: countError } = await supabaseAdmin
+      //   .from('widget_configs')
+      //   .select('id', { count: 'exact' })
+      //   .eq('user_id', req.user.id)
 
-      if (countError) {
-        throw new Error(`Failed to count widgets: ${countError.message}`)
-      }
+      // if (countError) {
+      //   throw new Error(`Failed to count widgets: ${countError.message}`)
+      // }
 
-      if (existingWidgets && existingWidgets.length >= user.max_widgets) {
-        return createErrorResponse(
-          `Widget limit exceeded. You can create up to ${user.max_widgets} widgets on the ${user.plan} plan.`,
-          403
-        )
-      }
+      // if (existingWidgets && existingWidgets.length >= user.max_widgets) {
+      //   return createErrorResponse(
+      //     `Widget limit exceeded. You can create up to ${user.max_widgets} widgets on the ${user.plan} plan.`,
+      //     403
+      //   )
+      // }
 
       // 고유 슬러그 생성
       const slug = await generateUniqueSlug()
