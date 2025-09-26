@@ -12,18 +12,30 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/dashboard/widgets - 새 위젯 생성 (완전 단순화)
+// POST /api/dashboard/widgets - 새 위젯 생성 (프론트엔드 구조에 맞춤)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    // 간단한 응답 반환
+    // 프론트엔드가 기대하는 구조로 응답
     const mockWidget = {
-      id: 'mock-widget-id',
+      id: 'widget-' + Date.now(),
       slug: 'mock-slug-' + Date.now(),
       title: body.title || 'My Widget',
       is_active: true,
-      created_at: new Date().toISOString()
+      config_data: body.config_data || {
+        nickname: '♡⸝⸝',
+        tagline: '빠르게 완성하고 공유하기',
+        link_url: '',
+        button_color: '#FFD0D8',
+        custom_text_1: '문구를 입력해 주세요 ♡',
+        custom_text_2: '문구를 입력해 주세요 ♡'
+      },
+      asset_refs: body.asset_refs || {},
+      version: 1,
+      expires_at: body.expires_at || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     }
     
     return createSuccessResponse(mockWidget)
