@@ -108,6 +108,10 @@ export async function signIn(email: string, password: string) {
 
 // 로그아웃 함수
 export async function signOut() {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { error } = await supabase.auth.signOut()
     
@@ -116,13 +120,18 @@ export async function signOut() {
     }
     
     return { success: true }
-  } catch {
+  } catch (err) {
+    console.error('로그아웃 오류:', err)
     return { success: false, error: '로그아웃 실패' }
   }
 }
 
 // 현재 사용자 정보 가져오기
 export async function getCurrentUser() {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { user }, error } = await supabase.auth.getUser()
     
@@ -131,13 +140,18 @@ export async function getCurrentUser() {
     }
     
     return { success: true, user }
-  } catch {
+  } catch (err) {
+    console.error('사용자 정보 가져오기 오류:', err)
     return { success: false, error: '사용자 정보 가져오기 실패' }
   }
 }
 
 // 세션 정보 가져오기 (더 강력한 세션 관리)
 export async function getSession() {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { session }, error } = await supabase.auth.getSession()
     
@@ -175,6 +189,10 @@ export interface UserProfile {
 
 // 사용자 프로필 데이터 가져오기 (최적화됨)
 export async function getUserProfile(userId: string) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     console.log('프로필 데이터 불러오기 시도 - 사용자 ID:', userId);
     
@@ -219,6 +237,10 @@ export async function getUserProfile(userId: string) {
 
 // 닉네임만 업데이트하는 함수
 export async function updateProfileName(profileName: string) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -252,6 +274,10 @@ export async function updateProfileName(profileName: string) {
 
 // 첫번째 텍스트만 업데이트하는 함수
 export async function updateFirstText(firstText: string) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -285,6 +311,10 @@ export async function updateFirstText(firstText: string) {
 
 // 두번째 텍스트만 업데이트하는 함수
 export async function updateSecondText(secondText: string) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -318,6 +348,10 @@ export async function updateSecondText(secondText: string) {
 
 // 사용자 프로필 데이터 저장/업데이트 (전체 데이터용)
 export async function saveUserProfile(profileData: Partial<UserProfile>) {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
