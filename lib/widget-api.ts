@@ -52,6 +52,10 @@ export interface GeneratedLink {
 
 // 사용자의 모든 위젯 조회
 export async function getUserWidgets(): Promise<{ success: boolean; data?: WidgetConfig[]; error?: string }> {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
@@ -80,6 +84,10 @@ export async function getUserWidgets(): Promise<{ success: boolean; data?: Widge
 
 // 새 위젯 생성
 export async function createWidget(widgetData: CreateWidgetData): Promise<{ success: boolean; data?: WidgetConfig; error?: string }> {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
@@ -113,6 +121,10 @@ export async function updateWidget(
   widgetId: string, 
   updates: Partial<CreateWidgetData>
 ): Promise<{ success: boolean; data?: WidgetConfig; error?: string }> {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
@@ -143,6 +155,10 @@ export async function updateWidget(
 
 // 위젯 삭제
 export async function deleteWidget(widgetId: string): Promise<{ success: boolean; error?: string }> {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
@@ -172,6 +188,10 @@ export async function deleteWidget(widgetId: string): Promise<{ success: boolean
 
 // 링크 생성
 export async function generateWidgetLink(widgetId: string): Promise<{ success: boolean; data?: GeneratedLink; error?: string }> {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
@@ -205,6 +225,10 @@ export async function uploadImage(
   widgetId: string,
   assetType: 'header_image' | 'profile_image'
 ): Promise<{ success: boolean; data?: any; error?: string }> {
+  if (!supabase) {
+    return { success: false, error: 'Supabase 클라이언트가 초기화되지 않았습니다. 환경 변수를 확인하세요.' }
+  }
+  
   try {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
