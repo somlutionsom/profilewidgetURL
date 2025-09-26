@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/setup-env.js && next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
@@ -24,6 +24,7 @@
     "test:all": "node scripts/run-all-validations.js",
     "setup:github": "bash scripts/setup-github.sh",
     "setup:vercel": "bash scripts/setup-vercel.sh",
+    "setup:env": "node scripts/setup-env.js",
     "validate": "npm run test:all"
   },
   "dependencies": {

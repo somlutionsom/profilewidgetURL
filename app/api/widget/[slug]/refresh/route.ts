@@ -11,6 +11,11 @@ interface RouteParams {
 // GET /api/widget/[slug]/refresh - Signed URL 갱신
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
+    // 환경 변수 검증
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return createErrorResponse('Server configuration error', 500)
+    }
+
     // Rate limiting (더 엄격한 제한)
     const clientIP = getClientIP(request)
     if (!rateLimit(`refresh_widget_${clientIP}`, 10, 60000)) {

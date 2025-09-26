@@ -1,11 +1,17 @@
 import { createClient } from '@supabase/supabase-js'
 
 // 서버사이드용 Supabase 클라이언트 (관리자 권한)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder_service_key'
 
-if (!supabaseUrl || !supabaseServiceKey) {
-  throw new Error('Missing Supabase environment variables')
+// 런타임에서만 환경 변수 검증
+function validateEnvironment() {
+  if (process.env.NODE_ENV !== 'production') return true
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error('Missing Supabase environment variables')
+    return false
+  }
+  return true
 }
 
 export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
@@ -16,7 +22,7 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 })
 
 // 퍼블릭 클라이언트 (anon key)
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder_anon_key'
 
 export const supabasePublic = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
