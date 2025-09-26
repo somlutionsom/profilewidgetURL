@@ -1,13 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
 // 서버사이드용 Supabase 클라이언트 (관리자 권한)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseUrl = 'https://jkdcoomemfowhehlzlpn.supabase.co'
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder_service_key'
 
-// 빌드 시점에서는 항상 placeholder 값 사용
-const isBuildTime = process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV
-const finalSupabaseUrl = isBuildTime ? 'https://placeholder.supabase.co' : supabaseUrl
-const finalSupabaseServiceKey = isBuildTime ? 'placeholder_service_key' : supabaseServiceKey
+// 프로덕션에서는 실제 URL 사용
+const finalSupabaseUrl = supabaseUrl
+const finalSupabaseServiceKey = supabaseServiceKey
 
 export const supabaseAdmin = createClient(finalSupabaseUrl, finalSupabaseServiceKey, {
   auth: {
@@ -17,8 +16,8 @@ export const supabaseAdmin = createClient(finalSupabaseUrl, finalSupabaseService
 })
 
 // 퍼블릭 클라이언트 (anon key)
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder_anon_key'
-const finalSupabaseAnonKey = isBuildTime ? 'placeholder_anon_key' : supabaseAnonKey
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZGNvb21lbWZvd2hlaGx6bHBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNDQwMjksImV4cCI6MjA3MTYyMDAyOX0.AkohCnOBIsmxMEyyzG9bOWYuPGh08HEF3RzNAs1Xuvo'
+const finalSupabaseAnonKey = supabaseAnonKey
 
 export const supabasePublic = createClient(finalSupabaseUrl, finalSupabaseAnonKey, {
   auth: {

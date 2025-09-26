@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-// 환경 변수 확인 및 디버깅 (임시 테스트용 기본값 포함)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jkdcoomemfowhehlzlpn.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZGNvb21lbWZvd2hlaGx6bHBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNDQwMjksImV4cCI6MjA3MTYyMDAyOX0.AkohCnOBIsmxMEyyzG9bOWYuPGh08HEF3RzNAs1Xuvo'
+// Supabase 설정 (프로덕션용 고정값)
+const supabaseUrl = 'https://jkdcoomemfowhehlzlpn.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZGNvb21lbWZvd2hlaGx6bHBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNDQwMjksImV4cCI6MjA3MTYyMDAyOX0.AkohCnOBIsmxMEyyzG9bOWYuPGh08HEF3RzNAs1Xuvo'
 
 // 개발 환경에서 환경 변수 확인
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
